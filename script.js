@@ -1,113 +1,117 @@
-// ===== Mobile menu =====
-const burger = document.getElementById('burger');
-const mobileNav = document.getElementById('mobileNav');
+﻿
+document.addEventListener("DOMContentLoaded", function () {
+  // Елементи симулятора
+  const resistanceSlider = document.getElementById("resistanceSlider");
+  const resistanceValue = document.getElementById("resistanceValue");
+  const forceValue = document.getElementById("forceValue");
+  const repCounter = document.getElementById("repCounter");
+  const calValue = document.getElementById("calValue");
+  const squeezeBtn = document.getElementById("squeezeBtn");
+  const resetBtn = document.getElementById("resetBtn");
 
-burger.addEventListener('click', () => {
-  mobileNav.classList.toggle('active');
-});
+  let repetitions = 0;
+  let calories = 0;
+  let force = resistanceSlider
+    ? Number(resistanceSlider.value)
+    : 30;
 
-// Close mobile menu on link click
-mobileNav.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    mobileNav.classList.remove('active');
-  });
-});
+  const CALORIES_FACTOR = 0.002;
 
-// ===== Simulator =====
-const slider = document.getElementById('resistanceSlider');
-const resistanceValue = document.getElementById('resistanceValue');
-const forceValue = document.getElementById('forceValue');
-const calValue = document.getElementById('calValue');
-const repCounter = document.getElementById('repCounter');
-const squeezeBtn = document.getElementById('squeezeBtn');
-const resetBtn = document.getElementById('resetBtn');
-
-let reps = 0;
-let calories = 0;
-
-function updateResistance() {
-  const val = parseInt(slider.value, 10);
-  resistanceValue.textContent = val;
-  forceValue.textContent = val;
-}
-
-slider.addEventListener('input', updateResistance);
-
-squeezeBtn.addEventListener('click', () => {
-  reps += 1;
-  const resistance = parseInt(slider.value, 10);
-  // Approximate calories: \~0.04 kcal per squeeze at 30 kg, scales with resistance
-  calories += (resistance / 30) * 0.04;
-  
-  repCounter.textContent = String(reps).padStart(4, '0');
-  calValue.textContent = calories.toFixed(1);
-
-  // Visual feedback
-  squeezeBtn.style.transform = 'scale(0.95)';
-  setTimeout(() => {
-    squeezeBtn.style.transform = '';
-  }, 100);
-});
-
-resetBtn.addEventListener('click', () => {
-  reps = 0;
-  calories = 0;
-  repCounter.textContent = '0000';
-  calValue.textContent = '0';
-});
-
-// ===== Order form =====
-const orderForm = document.getElementById('orderForm');
-const successModal = document.getElementById('successModal');
-const closeModal = document.getElementById('closeModal');
-
-orderForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const name = document.getElementById('name').value.trim();
-  const phone = document.getElementById('phone').value.trim();
-  const nova = document.getElementById('nova').value.trim();
-
-  if (!name  !phone  !nova) {
-    alert('���� �����, ��������� �� ����.');
-    return;
-  }
-
-  // Simple phone validation (Ukrainian format)
-  const phoneClean = phone.replace(/\D/g, '');
-  if (phoneClean.length < 10) {
-    alert('������ ��������� ����� ��������.');
-    return;
-  }
-
-  // Show success modal (in real project you would send data to backend / Telegram / etc.)
-  successModal.classList.add('active');
-  orderForm.reset();
-});
-
-closeModal.addEventListener('click', () => {
-  successModal.classList.remove('active');
-});
-
-// Close modal on backdrop click
-successModal.addEventListener('click', (e) => {
-  if (e.target === successModal) {
-    successModal.classList.remove('active');
-  }
-});
-
-// ===== Smooth scroll offset for sticky header =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const targetId = this.getAttribute('href');
-    if (targetId === '#') return;
-    
-    const target = document.querySelector(targetId);
-    if (target) {
-      e.preventDefault();
-      const headerHeight = document.querySelector('.header').offsetHeight;
-      const top = target.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
-      window.scrollTo({ top, behavior: 'smooth' });
+  function renderSimulator() {
+    if (resistanceValue) {
+      resistanceValue.textContent = force;
     }
-  });
+
+    if (forceValue) {
+      forceValue.textContent = force + " кг";
+    }
+
+    if (repCounter) {
+      repCounter.textContent = repetitions;
+    }
+
+    if (calValue) {
+      calValue.textContent = calories.toFixed(2);
+    }
+  }
+
+  if (resistanceSlider) {
+    resistanceSlider.addEventListener("input", function () {
+      force = Number(resistanceSlider.value);
+      renderSimulator();
+    });
+  }
+
+  if (squeezeBtn) {
+    squeezeBtn.addEventListener("click", function () {
+      repetitions += 1;
+      calories += force * CALORIES_FACTOR;
+      renderSimulator();
+
+      squeezeBtn.classList.add("active");
+
+      setTimeout(function () {
+        squeezeBtn.classList.remove("active");
+      }, 150);
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      repetitions = 0;
+      calories = 0;
+      renderSimulator();
+    });
+  }
+
+  // Мобільне меню
+  const burger = document.getElementById("burger");
+  const mobileNav = document.getElementById("mobileNav");
+
+  if (burger && mobileNav) {
+    burger.addEventListener("click", function () {
+      mobileNav.classList.toggle("active");
+      burger.classList.toggle("active");
+    });
+
+    mobileNav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        mobileNav.classList.remove("active");
+        burger.classList.remove("active");
+      });
+    });
+  }
+
+  // Відправка замовлення через Telegram
+  const orderForm = document.getElementById("orderForm");
+
+  if (orderForm) {
+    orderForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const nameField = document.getElementById("name");
+      const phoneField = document.getElementById("phone");
+      const novaField = document.getElementById("nova");
+
+      const name = nameField ? nameField.value.trim() : "";
+      const phone = phoneField ? phoneField.value.trim() : "";
+      const nova = novaField ? novaField.value.trim() : "";
+
+      const message =
+        "🛒 НОВЕ ЗАМОВЛЕННЯ — EXPANDO SHOP\n\n" +
+        "Товар: GripPro GripSim 60\n" +
+        "Ім'я: " + name + "\n" +
+        "Телефон: " + phone + "\n" +
+        "Доставка Новою поштою: " + (nova || "Не вказано");
+
+      const telegramUrl =
+        "https://t.me/Mikescash?text=" +
+        encodeURIComponent(message);
+
+      window.location.href = telegramUrl;
+    });
+  }
+
+  // Початкове відображення симулятора
+  renderSimulator();
 });

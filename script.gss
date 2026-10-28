@@ -1,0 +1,71 @@
+﻿// ==========================================
+// ВАШ НОМЕР ТЕЛЕФОНУ В TELEGRAM (ЗМІНІТЬ НА СВІЙ)
+// ==========================================
+const MY_TELEGRAM_PHONE = "380963524989"; // Наприклад: 380963524989
+
+// Обробка форми замовлення
+const orderForm = document.getElementById('orderForm');
+orderForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById('userName').value.trim();
+  const phone = document.getElementById('userPhone').value.trim();
+  const np = document.getElementById('userNP').value.trim();
+
+  if (!name  !phone  !np) {
+    alert("Будь ласка, заповніть усі поля!");
+    return;
+  }
+
+  // Формуємо текст повідомлення для Telegram
+  const message = 🛍️ НОВЕ ЗАМОВЛЕННЯ — Expandoshop\n\n +
+                  👤 Ім'я: ${name}\n +
+                  📞 Телефон: ${phone}\n +
+                  📦 Нова Пошта: ${np}\n +
+                  💰 Сума: 180 грн;
+
+  // Створюємо посилання для відкриття Telegram із готовим текстом
+  const telegramUrl = https://t.me/${MY_TELEGRAM_PHONE}?text= + encodeURIComponent(message);
+
+  // Відкриваємо Telegram у новому вікні/додатку
+  window.open(telegramUrl, '_blank');
+
+  // Очищаємо форму
+  orderForm.reset();
+});
+
+// ==========================================
+// СИМУЛЯТОР GripSim 60
+// ==========================================
+let count = 0;
+let calories = 0;
+
+const counterDisplay = document.getElementById('counter');
+const weightRange = document.getElementById('weightRange');
+const weightVal = document.getElementById('weightVal');
+const statForce = document.getElementById('statForce');
+const statCals = document.getElementById('statCals');
+const btnSqueeze = document.getElementById('btnSqueeze');
+const btnReset = document.getElementById('btnReset');
+
+weightRange.addEventListener('input', (e) => {
+  const val = e.target.value;
+  weightVal.textContent = val;
+  statForce.textContent = val + " кг";
+});
+
+btnSqueeze.addEventListener('click', () => {
+  count++;
+  const weight = parseInt(weightRange.value);
+  calories += (weight * 0.015);
+  
+  counterDisplay.textContent = String(count).padStart(4, '0');
+  statCals.textContent = calories.toFixed(1) + " ккал";
+});
+
+btnReset.addEventListener('click', () => {
+  count = 0;
+  calories = 0;
+  counterDisplay.textContent = "0 0 0 0";
+  statCals.textContent = "0 ккал";
+});
