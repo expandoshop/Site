@@ -9,15 +9,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-954952617"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'AW-954952617');
-</script></head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-954952617"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-954952617');
+  </script>
+
+  <!-- GoatCounter analytics -->
+  <script
+    data-goatcounter="https://expandoshop.goatcounter.com/count"
+    async
+    src="//gc.zgo.at/count.js">
+  </script>
+
+</head>
 <body>
   <!-- Header -->
   <header class="header">
@@ -233,6 +243,47 @@
           <span>🛡 Безпечна оплата</span>
           <span>✅ Гарантія якості</span>
           <span>↩ Легке повернення</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Telegram community + statistics -->
+  <section class="community-section" id="community">
+    <div class="container">
+      <div class="community-card">
+        <div class="community-content">
+          <span class="community-label">EXPANDO SHOP COMMUNITY</span>
+          <h2>Тренуйся разом із нами!</h2>
+          <p>Приєднуйся до нашої спільноти в Telegram та стеж за новинами GripPro.</p>
+          <a
+            href="https://t.me/SmartGripUkraine"
+            class="telegram-button"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="telegramCommunityButton"
+            data-goatcounter-click="telegram-community-click"
+            data-goatcounter-no-session="1"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M21.8 4.2 18.6 20c-.2 1.1-.8 1.4-1.7.9l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.4-4.8 8.8-8c.4-.4-.1-.6-.6-.2L6.6 14 2 12.6c-1-.3-1-1 .2-1.5L20 4.2c.8-.3 1.6.2 1.8 0Z"/>
+            </svg>
+            Наша спільнота в Telegram
+            <span class="telegram-arrow">↗</span>
+          </a>
+        </div>
+
+        <div class="community-stats">
+          <div class="community-stat">
+            <span class="community-stat-icon">◉</span>
+            <span class="community-stat-label">Відвідування сайту</span>
+            <strong id="siteVisitCount">Підключимо лічильник</strong>
+          </div>
+          <div class="community-stat">
+            <span class="community-stat-icon">➤</span>
+            <span class="community-stat-label">Переходи в Telegram</span>
+            <strong id="telegramClickCount">Підключимо лічильник</strong>
+          </div>
         </div>
       </div>
     </div>

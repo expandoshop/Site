@@ -112,6 +112,57 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Лічильники GoatCounter
+  const siteVisitCount = document.getElementById("siteVisitCount");
+  const telegramClickCount = document.getElementById("telegramClickCount");
+  const telegramCommunityButton = document.getElementById("telegramCommunityButton");
+
+  async function updatePublicCounter(path, element) {
+    if (!element) return;
+
+    try {
+      const counterUrl =
+        "https://expandoshop.goatcounter.com/counter/" +
+        encodeURIComponent(path) +
+        ".json";
+
+      const response = await fetch(counterUrl, { cache: "no-store" });
+
+      if (!response.ok) {
+        throw new Error("GoatCounter HTTP " + response.status);
+      }
+
+      const result = await response.json();
+
+      element.textContent =
+        result.count !== undefined ? result.count : "—";
+
+    } catch (error) {
+      console.warn("Не вдалося завантажити лічильник:", error);
+      element.textContent = "—";
+    }
+  }
+
+  // Загальна кількість переглядів сайту
+  updatePublicCounter("TOTAL", siteVisitCount);
+
+  // Кількість переходів у Telegram
+  updatePublicCounter("telegram-community-click", telegramClickCount);
+
+  if (telegramCommunityButton) {
+    telegramCommunityButton.addEventListener("click", function () {
+      if (
+        window.goatcounter &&
+        typeof window.goatcounter.count === "function"
+      ) {
+        window.goatcounter.count({
+          path: "telegram-community-click",
+          event: true
+        });
+      }
+    });
+  }
+
   // Початкове відображення симулятора
   renderSimulator();
 });
